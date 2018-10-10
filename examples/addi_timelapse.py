@@ -1,11 +1,11 @@
 import os
-from riscv_verif import riscv_instr_seq_env
-from riscv import ADDI, TInstructionI
+from pygears_riscv.verif.env import riscv_instr_seq_env
+from pygears_riscv.riscv.riscv import ADDI, TInstructionI
 from pygears.sim import sim
 from pygears.sim.extens import sim_timelapse
 from functools import partial
 
-gif_delay = 80
+gif_delay = 120
 addi_timelapse_dir = os.path.expanduser('~/pygears/docs/blog/riscv/images')
 
 riscv_instr_seq_env(

@@ -10,11 +10,11 @@ TInstructionI = Tuple[{
     'imm': Int[12]
 }]
 
-OP_IMM = 0x13
+OPCODE_IMM = 0x13
 FUNCT3_ADDI = 0x0
 
 ADDI = TInstructionI({
-    'opcode': OP_IMM,
+    'opcode': OPCODE_IMM,
     'rd': 0,
     'funct3': FUNCT3_ADDI,
     'rs1': 0,
@@ -27,7 +27,7 @@ def riscv(instruction: TInstructionI, reg_data: Uint['xlen']):
 
     reg_file_rd_req = instruction['rs1']
 
-    add_res = (reg_data + instruction['imm']) | reg_data.dtype
+    add_res = ((reg_data | Int['xlen']) + instruction['imm']) | reg_data.dtype
 
     reg_file_wr_req = ccat(instruction['rd'], add_res)
 

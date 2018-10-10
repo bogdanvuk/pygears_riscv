@@ -1,13 +1,13 @@
 import os
 from pygears_riscv.verif.spike import Spike
-from pygears_riscv.riscv.riscv import OP_IMM, FUNCT3_ADDI
+from pygears_riscv.riscv.riscv import OPCODE_IMM, FUNCT3_ADDI
 
-instruction_names = {OP_IMM: {FUNCT3_ADDI: 'addi'}}
+instruction_names = {OPCODE_IMM: {FUNCT3_ADDI: 'addi'}}
 
 
 def disassemble(instruction):
-    if instruction['opcode'] == OP_IMM:
-        name = instruction_names[OP_IMM][instruction['funct3']]
+    if instruction['opcode'] == OPCODE_IMM:
+        name = instruction_names[OPCODE_IMM][instruction['funct3']]
 
         return (f'{name} x{int(instruction["rd"])},'
                 f' x{int(instruction["rs1"])},'
@@ -59,7 +59,7 @@ class SpikeInstrTest(Spike):
         ld_file_name = os.path.join(outdir, 'instr_test.ld')
         log_file_name = os.path.join(outdir, 'instr_test.log')
 
-        os.makedirs(outdir)
+        os.makedirs(outdir, exist_ok=True)
 
         with open(ld_file_name, 'w') as f:
             f.write(linker_script)
