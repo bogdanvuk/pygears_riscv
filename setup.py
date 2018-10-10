@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='pygears',
-    version='0.1.1',
+    name='pygears_riscv',
+    version='0.0.1',
     description='PyGears RISC-V implementation',
     packages=find_packages(exclude=['tests*']),
     license='MIT',

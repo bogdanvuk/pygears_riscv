@@ -1,6 +1,6 @@
 import os
-from spike import Spike
-from riscv import OP_IMM, FUNCT3_ADDI
+from pygears_riscv.verif.spike import Spike
+from pygears_riscv.riscv.riscv import OP_IMM, FUNCT3_ADDI
 
 instruction_names = {OP_IMM: {FUNCT3_ADDI: 'addi'}}
 
@@ -10,7 +10,7 @@ def disassemble(instruction):
         name = instruction_names[OP_IMM][instruction['funct3']]
 
         return (f'{name} x{int(instruction["rd"])},'
-                f' x{int(instruction["rs1"])}, '
+                f' x{int(instruction["rs1"])},'
                 f' {int(instruction["imm"])}')
 
     else:
@@ -57,6 +57,9 @@ class SpikeInstrTest(Spike):
         asm_file_name = os.path.join(outdir, 'instr_test.s')
         self.out_file_name = os.path.join(outdir, 'instr_test')
         ld_file_name = os.path.join(outdir, 'instr_test.ld')
+        log_file_name = os.path.join(outdir, 'instr_test.log')
+
+        os.makedirs(outdir)
 
         with open(ld_file_name, 'w') as f:
             f.write(linker_script)
@@ -69,7 +72,8 @@ class SpikeInstrTest(Spike):
 
         gcc_cmd = (f'riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32'
                    f' -nostdlib -T {ld_file_name} {asm_file_name}'
-                   f' -o {self.out_file_name}')
+                   f' -o {self.out_file_name}'
+                   f' > {log_file_name} 2>&1')
 
         os.system(gcc_cmd)
 
