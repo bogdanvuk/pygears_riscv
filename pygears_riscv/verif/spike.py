@@ -64,8 +64,8 @@ class Spike:
     def pc(self) -> int:
         return int(self.command(f'pc 0'), 16) - Spike.CODE_BASE_ADDRESS
 
-    def step(self):
-        self.command('run 1')
+    def step(self, cnt=1):
+        self.command(f'run {cnt}')
 
     def reg(self, reg_id) -> int:
         return int(self.command(f'reg 0 {abi_reg_names[reg_id]}'), 16)

@@ -3,7 +3,7 @@ from pygears.sim.modules import drv
 from pygears.typing import Uint
 
 from pygears_riscv.riscv.riscv import riscv
-from pygears_riscv.riscv.register_file import register_file
+from pygears_riscv.verif.register_file import register_file
 
 
 def riscv_instr_seq_env(instr_t, instr_seq, xlen, reg_file_mem={}):
