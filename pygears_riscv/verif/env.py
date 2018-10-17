@@ -6,7 +6,20 @@ from pygears_riscv.riscv.riscv import riscv, TInstructionI
 from pygears_riscv.verif.register_file import register_file
 
 
-def riscv_instr_seq_env(instr_seq, xlen, reg_file_mem={}):
+def riscv_instr_seq_env(instr_seq, xlen=32, reg_file_mem={}):
+    """Drives riscv with an instruction sequence.
+
+    Args:
+       instr_seq: Sequence of instructions to send to riscv
+
+    Keyword Args:
+       xlen (int): Width of the riscv registers in bits
+       reg_file_mem (dict): Initial register file dictionary that maps
+            register IDs to their initial values
+
+    Returns:
+       reg_file_mem
+    """
 
     instruction = drv(t=TInstructionI, seq=instr_seq)
 
