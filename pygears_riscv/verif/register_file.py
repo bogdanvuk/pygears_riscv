@@ -12,7 +12,7 @@ TWriteRequest = Tuple[{'addr': TAddr, 'data': TData}]
 async def register_file_write(request: TWriteRequest, *, storage):
     async with request as req:
         if req['addr'] != 0:
-            sim_log().info(f'Writting {req["data"]} to {int(req["addr"])}')
+            sim_log().info(f'Writing {req["data"]} to x{int(req["addr"])}')
             storage[int(req['addr'])] = req['data']
 
 

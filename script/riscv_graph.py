@@ -6,7 +6,7 @@ from pygears.sim.extens import graphviz
 img_file_name = os.path.expanduser(
     '~/pygears/docs/blog/riscv/images/riscv_graph_addi.png')
 
-riscv_instr_seq_env(instr_t=TInstructionI, instr_seq=[], xlen=32)
+riscv_instr_seq_env(instr_seq=[], xlen=32)
 
 graph = graphviz.graph(edge_fmt='{prod_gear} -> {cons_gear}')
 
