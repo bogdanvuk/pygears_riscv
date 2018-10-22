@@ -10,12 +10,13 @@ def riscv_instr_seq_env(instr_seq, xlen=32, reg_file_mem={}):
     """Drives riscv with an instruction sequence.
 
     Args:
-       instr_seq: Sequence of instructions to send to riscv
+       instr_seq: Sequence of instructions to send to riscv, encoded as
+           :py:data:`TInstructionI`
 
     Keyword Args:
        xlen (int): Width of the riscv registers in bits
        reg_file_mem (dict): Initial register file dictionary that maps
-            register IDs to their initial values
+           register IDs to their initial values
 
     Returns:
        reg_file_mem

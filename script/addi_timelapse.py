@@ -7,10 +7,12 @@ from functools import partial
 
 gif_delay = 120
 addi_timelapse_dir = os.path.expanduser('~/pygears/docs/blog/riscv/images')
-timelapse_gif_name = 'addi_timelapse'
+timelapse_gif_name = 'addi-timelapse'
 
 riscv_instr_seq_env(
-    instr_t=TInstructionI, instr_seq=[ADDI.replace(imm=1234, rd=22)], xlen=32)
+    instr_seq=[ADDI.replace(imm=-1233, rd=1, rs1=1)],
+    xlen=32,
+    reg_file_mem={1: -1})
 
 sim(extens=[
     partial(
@@ -26,5 +28,5 @@ os.system(f"convert -delay {gif_delay} -loop 0 "
 os.system(f"convert {timelapse_gif_name}.gif -coalesce"
           f" -pointsize 40"
           f" -gravity NorthWest -annotate +20+20"
-          f" \"Timestep: %[fx:floor(t/16)] Delta: %[fx:t%16]\""
+          f" \"Timestep: %[fx:floor(t/18)] Delta: %[fx:t%18]\""
           f" -layers Optimize {timelapse_gif_name}.gif")

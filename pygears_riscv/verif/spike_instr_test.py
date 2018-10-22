@@ -30,12 +30,12 @@ assembly_template_string = """
   .global _start
 
 _start:
-{% for reg, value in reg_set_init.items() %}
+{% for reg, value in reg_file_init.items() %}
 .equ X{{ reg }}_INIT_VALUE, {{ value }}
 {%- endfor %}
 
   ;; # Optional preloading of initial register values.
-{% for reg in reg_set_init %}
+{% for reg in reg_file_init %}
   lui x{{ reg }},      %hi(X{{ reg }}_INIT_VALUE)
   addi x{{ reg }}, x{{ reg }}, %lo(X{{ reg }}_INIT_VALUE)
 {%- endfor %}
@@ -62,7 +62,7 @@ fromhost: .dword 0"""
 
 
 class SpikeInstrTest(Spike):
-    def __init__(self, instructions, outdir='.', reg_set_init={}):
+    def __init__(self, instructions, outdir='.', reg_file_init={}):
         outdir = os.path.abspath(
             os.path.expandvars(os.path.expanduser(outdir)))
         asm_file_name = os.path.join(outdir, 'instr_test.s')
@@ -76,7 +76,7 @@ class SpikeInstrTest(Spike):
             f.write(linker_script)
 
         self.instructions = instructions
-        self.reg_set_init = reg_set_init
+        self.reg_file_init = reg_file_init
 
         with open(asm_file_name, 'w') as f:
             assembly_template = jinja2.Environment().from_string(
@@ -84,7 +84,7 @@ class SpikeInstrTest(Spike):
 
             f.write(
                 assembly_template.render(
-                    reg_set_init=reg_set_init,
+                    reg_file_init=reg_file_init,
                     disassemble=disassemble,
                     instructions=instructions))
 
@@ -97,25 +97,45 @@ class SpikeInstrTest(Spike):
 
         super().__init__(f'spike -d --isa=rv32i {self.out_file_name}')
 
-    def reg_set_read(self):
+    def reg_file_read(self):
         return [self.reg(i) & 0xffffffff for i in range(32)]
 
     @property
-    def reg_set_initialization_instr_num(self):
+    def reg_file_initialization_instr_num(self):
         '''Returns the number of instructions needed for the register set
         initialization'''
 
-        return len(self.reg_set_init) * 2
+        return len(self.reg_file_init) * 2
 
     def run_all(self):
-        self.step(self.reg_set_initialization_instr_num)
-        reg_set_start = self.reg_set_read()
+        self.step(self.reg_file_initialization_instr_num)
+        reg_file_start = self.reg_file_read()
         self.step(len(self.instructions))
-        reg_set_end = self.reg_set_read()
+        reg_file_end = self.reg_file_read()
 
-        return reg_set_start, reg_set_end
+        return reg_file_start, reg_file_end
 
 
-def run_all(instructions, outdir='.', reg_set_init={}):
-    with SpikeInstrTest(instructions, outdir, reg_set_init=reg_set_init) as sp:
+def run_all(instructions, outdir='.', reg_file_init=None):
+    """Runs a set of instructions on Spike simulator and returns the resulting
+    state of the register file.
+
+    Args:
+       instructions: Sequence of instructions to execute in Spike, encoded as
+           :py:data:`TInstructionI`
+
+    Keyword Args:
+       outdir (str): Directory in which to store the intermediate files
+       reg_file_init (dict): Initial register file dictionary that maps
+           register IDs to their initial values
+
+    Returns:
+       Returns the initial and the resulting state of the register file
+
+    """
+
+    if reg_file_init is None:
+        reg_file_init = {}
+
+    with SpikeInstrTest(instructions, outdir, reg_file_init=reg_file_init) as sp:
         return sp.run_all()
