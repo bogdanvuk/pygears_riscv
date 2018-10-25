@@ -23,11 +23,14 @@ ADDI = TInstructionI({
 
 
 @gear
-def riscv(instruction: TInstructionI, reg_data: Uint['xlen'], *, xlen=b'xlen'):
+def riscv(instruction: TInstructionI, reg_data: Uint['xlen']):
 
     reg_file_rd_req = instruction['rs1']
 
-    add_res = ((reg_data | Int[xlen]) + instruction['imm']) | reg_data.dtype
+    reg_data_signed = reg_data | Int[int(reg_data.dtype)]
+
+    add_res = (reg_data_signed + instruction['imm']) \
+        | reg_data.dtype
 
     reg_file_wr_req = ccat(instruction['rd'], add_res)
 

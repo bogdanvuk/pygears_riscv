@@ -1,6 +1,5 @@
 import os
 from pygears_riscv.verif.env import riscv_instr_seq_env
-from pygears_riscv.riscv.riscv import TInstructionI
 from pygears.sim.extens import graphviz
 
 img_file_name = os.path.expanduser(
