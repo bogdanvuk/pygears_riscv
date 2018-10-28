@@ -11,5 +11,5 @@ def test_dissasembly():
 
 def test_addi():
     test_instr = ADDI.replace(imm=1234, rd=22, rs1=0)
-    reg_values = run_all([test_instr], outdir='build')
+    _, reg_values = run_all([test_instr], outdir='build')
     assert(reg_values[22] == 1234)
