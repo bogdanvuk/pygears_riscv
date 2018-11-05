@@ -1,4 +1,3 @@
-from nose import with_setup
 from pygears.sim import sim
 from pygears.typing import Int
 
@@ -8,10 +7,9 @@ from pygears_riscv.verif.env import riscv_instr_seq_env
 from pygears_riscv.verif import spike_instr_test
 
 from pygears.sim.modules.verilator import SimVerilated
-from pygears import find, clear
+from pygears import find
 
 
-@with_setup(clear)
 def test_addi():
     test_instr = ADDI.replace(imm=-1233, rd=1, rs1=1)
 
@@ -33,7 +31,6 @@ def test_addi():
         assert spike_reg_file_end[reg_id] == reg_value
 
 
-@with_setup(clear)
 def test_addi_verilator():
     test_instr = ADDI.replace(imm=-1233, rd=1, rs1=1)
 
