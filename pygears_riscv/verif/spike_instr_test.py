@@ -1,9 +1,9 @@
 import jinja2
 import os
 from pygears_riscv.verif.spike import Spike
-from pygears_riscv.riscv.riscv import OPCODE_IMM, FUNCT3_ADDI
+from pygears_riscv.riscv.riscv import OPCODE_IMM, FUNCT3_ADDI, FUNCT3_SLTI
 
-instruction_names = {OPCODE_IMM: {FUNCT3_ADDI: 'addi'}}
+instruction_names = {OPCODE_IMM: {FUNCT3_ADDI: 'addi', FUNCT3_SLTI: 'slti'}}
 
 
 def disassemble(instruction):

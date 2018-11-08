@@ -11,12 +11,21 @@ TInstructionI = Tuple[{
 }]
 
 OPCODE_IMM = 0x13
-FUNCT3_ADDI = 0x0
+FUNCT3_ADDI = 0x000
+FUNCT3_SLTI = 0b010
 
 ADDI = TInstructionI({
     'opcode': OPCODE_IMM,
     'rd': 0,
     'funct3': FUNCT3_ADDI,
+    'rs1': 0,
+    'imm': 0
+})
+
+SLTI = TInstructionI({
+    'opcode': OPCODE_IMM,
+    'rd': 0,
+    'funct3': FUNCT3_SLTI,
     'rs1': 0,
     'imm': 0
 })
