@@ -1,6 +1,7 @@
 from pygears import gear
 from pygears.typing import Tuple, Uint, Int
-from pygears.common import ccat
+from pygears.common import ccat, add
+from pygears.common import when
 
 TInstructionI = Tuple[{
     'opcode': Uint[7],
@@ -32,14 +33,24 @@ SLTI = TInstructionI({
 
 
 @gear
+def slti(operands):
+    return operands[0] < operands[1]
+
+
+@gear
 def riscv(instruction: TInstructionI, reg_data: Uint['xlen']):
 
     reg_file_rd_req = instruction['rs1']
 
     reg_data_signed = reg_data | Int[int(reg_data.dtype)]
 
-    add_res = (reg_data_signed + instruction['imm']) \
-        | reg_data.dtype
+    operands = ccat(reg_data_signed, instruction['imm'])
+
+    add_res = operands | when(
+        instruction['funct3'] == FUNCT3_ADDI,
+        f=add,
+        fe=slti,
+        tout=reg_data.dtype)
 
     reg_file_wr_req = ccat(instruction['rd'], add_res)
 

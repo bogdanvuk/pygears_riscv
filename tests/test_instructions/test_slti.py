@@ -1,13 +1,9 @@
 from pygears.sim import sim
-from pygears.typing import Int
 
 from pygears_riscv.riscv.riscv import SLTI
 
 from pygears_riscv.verif.env import riscv_instr_seq_env
 from pygears_riscv.verif import spike_instr_test
-
-
-from pygears.typing_common import cast
 
 
 def test_slti():
@@ -25,9 +21,7 @@ def test_slti():
 
     sim()
 
-    print(
-        f'Resulting value of the register x1: {cast(reg_file_mem[1], Int[32])}'
-    )
+    print(f'Resulting value of the register x1: {reg_file_mem[1]}')
 
     for reg_id, reg_value in reg_file_mem.items():
         assert spike_reg_file_end[reg_id] == reg_value
