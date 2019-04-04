@@ -1,5 +1,5 @@
 from pygears.sim import sim
-from pygears.typing import Int
+from pygears.typing import Int, cast
 
 from pygears_riscv.riscv.riscv import ADDI
 
@@ -25,7 +25,9 @@ def test_addi():
 
     sim()
 
-    print(f'Resulting value of the register x1: {Int[32](reg_file_mem[1])}')
+    print(
+        f'Resulting value of the register x1: {cast(reg_file_mem[1], Int[32])}'
+    )
 
     for reg_id, reg_value in reg_file_mem.items():
         assert spike_reg_file_end[reg_id] == reg_value
@@ -47,7 +49,9 @@ def test_addi_verilator():
     find('/riscv').params['sim_cls'] = SimVerilated
     sim("build")
 
-    print(f'Resulting value of the register x1: {Int[32](reg_file_mem[1])}')
+    print(
+        f'Resulting value of the register x1: {cast(reg_file_mem[1], Int[32])}'
+    )
 
     for reg_id, reg_value in reg_file_mem.items():
         assert spike_reg_file_end[reg_id] == reg_value
